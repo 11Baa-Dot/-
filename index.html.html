@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猫在 🐱 校园流浪猫行为图鉴</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF9A8B;
+            --primary-light: #FFD6C1;
+            --secondary: #A8E6CF;
+            --accent: #FFD93D;
+            --bg-cream: #FFF9F0;
+            --bg-pink: #FFF0F5;
+            --text-dark: #4A3728;
+            --text-light: #8B7355;
+            --card-bg: #FFFFFF;
+            --shadow: 0 8px 32px rgba(255, 154, 139, 0.15);
+            --shadow-hover: 0 16px 48px rgba(255, 154, 139, 0.25);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* 背景装饰 */
+        .bg-decoration {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .bg-decoration .paw {
+            position: absolute; opacity: 0.08; font-size: 2rem;
+            animation: floatPaw 8s ease-in-out infinite;
+        }
+        .bg-decoration .paw:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .bg-decoration .paw:nth-child(2) { top: 20%; right: 8%; animation-delay: 1.5s; font-size: 1.5rem; }
+        .bg-decoration .paw:nth-child(3) { top: 50%; left: 3%; animation-delay: 3s; font-size: 1.8rem; }
+        .bg-decoration .paw:nth-child(4) { top: 70%; right: 5%; animation-delay: 4.5s; }
+        .bg-decoration .paw:nth-child(5) { top: 85%; left: 15%; animation-delay: 6s; font-size: 1.3rem; }
+        .bg-decoration .paw:nth-child(6) { top: 35%; right: 15%; animation-delay: 2s; }
+        @keyframes floatPaw {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* 头部 */
+        header {
+            position: relative; z-index: 10; text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg-pink) 50%, var(--secondary) 100%);
+            border-radius: 0 0 60px 60px; margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .logo {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 3.5rem;
+            color: var(--text-dark); margin-bottom: 10px;
+            text-shadow: 3px 3px 0px rgba(255,255,255,0.5);
+            animation: bounceIn 1s ease-out;
+        }
+        .subtitle { font-size: 1.1rem; color: var(--text-light); margin-bottom: 8px; }
+        .tagline {
+            display: inline-block; background: rgba(255,255,255,0.7);
+            padding: 8px 24px; border-radius: 30px; font-size: 0.95rem;
+            color: var(--primary); font-weight: 500;
+            backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.5);
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* 导航 */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255, 249, 240, 0.95);
+            backdrop-filter: blur(20px); padding: 15px 20px;
+            text-align: center; border-bottom: 2px solid var(--primary-light);
+        }
+        nav a {
+            display: inline-block; margin: 0 15px; padding: 8px 20px;
+            text-decoration: none; color: var(--text-light); font-weight: 500;
+            border-radius: 25px; transition: all 0.3s ease; cursor: pointer;
+            border: 2px solid transparent;
+        }
+        nav a:hover, nav a.active {
+            color: var(--primary); background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        /* 容器 */
+        .container {
+            max-width: 1400px; margin: 0 auto; padding: 20px;
+            position: relative; z-index: 1;
+        }
+
+        /* 板块切换 */
+        .section { display: none; }
+        .section.active { display: block; animation: fadeInSection 0.5s ease-out; }
+        @keyframes fadeInSection {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 统计栏 */
+        .stats-bar {
+            display: flex; justify-content: center; gap: 30px;
+            margin-bottom: 50px; flex-wrap: wrap;
+        }
+        .stat-item {
+            background: var(--card-bg); padding: 20px 35px;
+            border-radius: 20px; box-shadow: var(--shadow);
+            text-align: center; transition: transform 0.3s;
+            border: 3px solid var(--primary-light);
+        }
+        .stat-item:hover { transform: translateY(-5px); }
+        .stat-number {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 2.5rem; color: var(--primary);
+        }
+        .stat-label { font-size: 0.9rem; color: var(--text-light); margin-top: 5px; }
+
+        /* ===== 首页 ===== */
+        .hero-section {
+            text-align: center; padding: 40px 20px;
+        }
+        .hero-cat {
+            font-size: 6rem; margin-bottom: 20px;
+            animation: catWiggle 3s ease-in-out infinite;
+        }
+        @keyframes catWiggle {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        .hero-title {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 2rem;
+            color: var(--text-dark); margin-bottom: 15px;
+        }
+        .hero-desc {
+            max-width: 700px; margin: 0 auto 30px;
+            line-height: 2; color: var(--text-light); font-size: 1.05rem;
+        }
+        .hero-features {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px; max-width: 900px; margin: 40px auto;
+        }
+        .feature-card {
+            background: var(--card-bg); padding: 30px 25px;
+            border-radius: 25px; box-shadow: var(--shadow);
+            border: 3px solid transparent; transition: all 0.3s;
+            cursor: pointer;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px); border-color: var(--primary-light);
+            box-shadow: var(--shadow-hover);
+        }
+        .feature-icon { font-size: 3rem; margin-bottom: 15px; }
+        .feature-title {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 1.3rem;
+            color: var(--text-dark); margin-bottom: 10px;
+        }
+        .feature-desc { color: var(--text-light); font-size: 0.95rem; line-height: 1.7; }
+
+        /* 研究背景卡片 */
+        .research-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; margin: 40px 0;
+        }
+        .research-card {
+            background: linear-gradient(135deg, rgba(255,154,139,0.08), rgba(168,230,207,0.08));
+            padding: 25px; border-radius: 20px;
+            border: 2px solid var(--primary-light);
+        }
+        .research-card h4 {
+            font-family: 'ZCOOL KuaiLe', cursive; color: var(--primary);
+            margin-bottom: 12px; font-size: 1.2rem;
+        }
+        .research-card p { color: var(--text-light); line-height: 1.8; font-size: 0.95rem; }
+
+        /* ===== 猫咪档案 ===== */
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px; margin-bottom: 60px;
+        }
+        .cat-card {
+            background: var(--card-bg); border-radius: 30px;
+            overflow: hidden; box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; border: 3px solid transparent;
+        }
+        .cat-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-hover); border-color: var(--primary-light);
+        }
+        .cat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            border-radius: 30px 30px 0 0;
+        }
+        .card-header {
+            padding: 25px 25px 15px;
+            display: flex; align-items: flex-start; gap: 15px;
+            background: linear-gradient(135deg, rgba(255,154,139,0.08) 0%, rgba(168,230,207,0.08) 100%);
+        }
+        .avatar-container {
+            width: 90px; height: 90px; border-radius: 50%;
+            overflow: hidden; flex-shrink: 0;
+            border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            display: flex; align-items: center; justify-content: center;
+        }
+        .avatar-container img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .avatar-placeholder {
+            font-size: 2.5rem;
+        }
+        .avatar-info h3 {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 1.6rem;
+            color: var(--text-dark); margin-bottom: 8px;
+        }
+        .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+        .badge {
+            padding: 4px 12px; border-radius: 15px;
+            font-size: 0.75rem; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 4px;
+        }
+        .badge-gender-m { background: #E3F2FD; color: #1976D2; }
+        .badge-gender-f { background: #FCE4EC; color: #C2185B; }
+        .badge-color { background: #FFF3E0; color: #E65100; }
+        .badge-health { background: #E8F5E9; color: #2E7D32; }
+        .badge-love { background: #F3E5F5; color: #7B1FA2; }
+
+        .card-body { padding: 0 25px 20px; }
+        .info-section { margin-bottom: 15px; }
+        .info-section:last-child { margin-bottom: 0; }
+        .info-label {
+            font-size: 0.8rem; color: var(--primary); font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+        }
+        .info-content {
+            font-size: 0.95rem; color: var(--text-dark);
+            line-height: 1.7; padding-left: 5px;
+        }
+        .relations {
+            background: linear-gradient(135deg, rgba(168,230,207,0.15), rgba(255,217,61,0.1));
+            border-radius: 15px; padding: 12px 15px; margin-top: 10px;
+        }
+        .card-footer {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, rgba(255,154,139,0.05), rgba(168,230,207,0.05));
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 2px dashed var(--primary-light);
+        }
+        .card-footer .mood { font-size: 1.5rem; }
+        .card-footer .id {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            color: var(--text-light); opacity: 0.5; font-size: 0.9rem;
+        }
+
+        /* ===== 行为图鉴 ===== */
+        .behavior-intro {
+            text-align: center; max-width: 800px; margin: 0 auto 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255,154,139,0.08), rgba(168,230,207,0.08));
+            border-radius: 25px; border: 2px solid var(--primary-light);
+        }
+        .behavior-intro h2 {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 1.8rem;
+            color: var(--text-dark); margin-bottom: 15px;
+        }
+        .behavior-intro p { color: var(--text-light); line-height: 1.8; }
+
+        .behavior-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px; margin-bottom: 60px;
+        }
+        .behavior-card {
+            background: var(--card-bg); border-radius: 25px;
+            padding: 30px; box-shadow: var(--shadow);
+            border: 3px solid transparent; transition: all 0.3s;
+            position: relative; overflow: hidden;
+        }
+        .behavior-card:hover {
+            transform: translateY(-5px); border-color: var(--primary-light);
+            box-shadow: var(--shadow-hover);
+        }
+        .behavior-card::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+        .behavior-icon {
+            font-size: 3.5rem; margin-bottom: 15px;
+            display: block; text-align: center;
+        }
+        .behavior-name {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 1.5rem;
+            color: var(--text-dark); text-align: center; margin-bottom: 15px;
+        }
+        .behavior-desc {
+            color: var(--text-light); line-height: 1.8;
+            font-size: 0.95rem; margin-bottom: 15px;
+        }
+        .behavior-examples {
+            background: rgba(255,154,139,0.08); border-radius: 15px;
+            padding: 15px; margin-top: 10px;
+        }
+        .behavior-examples h5 {
+            color: var(--primary); font-size: 0.85rem;
+            margin-bottom: 8px; font-weight: 700;
+        }
+        .behavior-examples ul {
+            list-style: none; padding: 0;
+        }
+        .behavior-examples li {
+            padding: 4px 0; color: var(--text-dark);
+            font-size: 0.9rem; padding-left: 20px; position: relative;
+        }
+        .behavior-examples li::before {
+            content: '🐾'; position: absolute; left: 0;
+        }
+        .behavior-cats {
+            margin-top: 12px; padding-top: 12px;
+            border-top: 1px dashed var(--primary-light);
+        }
+        .behavior-cats span {
+            display: inline-block; background: var(--secondary);
+            color: var(--text-dark); padding: 4px 12px;
+            border-radius: 15px; font-size: 0.8rem; margin: 3px;
+        }
+
+        /* 观察指南 */
+        .guide-section {
+            background: var(--card-bg); border-radius: 25px;
+            padding: 35px; box-shadow: var(--shadow);
+            margin-bottom: 40px; border: 2px solid var(--primary-light);
+        }
+        .guide-section h3 {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 1.5rem;
+            color: var(--text-dark); margin-bottom: 20px;
+            text-align: center;
+        }
+        .guide-steps {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .guide-step {
+            text-align: center; padding: 20px;
+            background: linear-gradient(135deg, rgba(255,154,139,0.06), rgba(168,230,207,0.06));
+            border-radius: 20px; border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .guide-step:hover { border-color: var(--primary-light); transform: translateY(-3px); }
+        .guide-step .step-num {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 2rem;
+            color: var(--primary); margin-bottom: 10px;
+        }
+        .guide-step h4 { color: var(--text-dark); margin-bottom: 8px; font-size: 1rem; }
+        .guide-step p { color: var(--text-light); font-size: 0.9rem; line-height: 1.6; }
+
+        /* ===== 猫脉关系 ===== */
+        .relation-intro {
+            text-align: center; max-width: 800px; margin: 0 auto 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(168,230,207,0.15), rgba(255,217,61,0.1));
+            border-radius: 25px; border: 2px solid var(--secondary);
+        }
+        .relation-intro h2 {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 1.8rem;
+            color: var(--text-dark); margin-bottom: 15px;
+        }
+        .relation-intro p { color: var(--text-light); line-height: 1.8; }
+
+        .relation-categories {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; margin-bottom: 50px;
+        }
+        .relation-category {
+            background: var(--card-bg); border-radius: 25px;
+            padding: 25px; box-shadow: var(--shadow);
+            border: 3px solid transparent; transition: all 0.3s;
+        }
+        .relation-category:hover {
+            transform: translateY(-5px); border-color: var(--primary-light);
+        }
+        .relation-category-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+            padding-bottom: 15px; border-bottom: 2px dashed var(--primary-light);
+        }
+        .relation-category-icon { font-size: 2.5rem; }
+        .relation-category-title {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 1.4rem;
+            color: var(--text-dark);
+        }
+        .relation-category-subtitle {
+            font-size: 0.85rem; color: var(--text-light);
+        }
+        .relation-list { display: flex; flex-direction: column; gap: 12px; }
+        .relation-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 15px; background: rgba(255,154,139,0.05);
+            border-radius: 15px; transition: all 0.3s;
+        }
+        .relation-item:hover { background: rgba(255,154,139,0.1); transform: translateX(5px); }
+        .relation-avatar {
+            width: 45px; height: 45px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; flex-shrink: 0;
+            border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .relation-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .relation-info { flex: 1; }
+        .relation-info .name {
+            font-weight: 700; color: var(--text-dark); font-size: 1rem;
+        }
+        .relation-info .detail {
+            font-size: 0.85rem; color: var(--text-light); margin-top: 2px;
+        }
+        .relation-arrow { font-size: 1.2rem; }
+
+        /* 关系网络图 */
+        .network-section {
+            background: var(--card-bg); border-radius: 25px;
+            padding: 35px; box-shadow: var(--shadow);
+            margin-bottom: 40px; border: 2px solid var(--secondary);
+        }
+        .network-section h3 {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 1.5rem;
+            color: var(--text-dark); text-align: center; margin-bottom: 25px;
+        }
+        .network-visual {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 20px; padding: 20px;
+        }
+        .network-node {
+            text-align: center; padding: 15px;
+            background: linear-gradient(135deg, var(--primary-light), rgba(168,230,207,0.3));
+            border-radius: 20px; min-width: 100px;
+            border: 3px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        .network-node:hover { transform: scale(1.1); }
+        .network-node .node-emoji { font-size: 2rem; margin-bottom: 5px; }
+        .network-node .node-name {
+            font-family: 'ZCOOL KuaiLe', cursive; font-size: 1rem; color: var(--text-dark);
+        }
+        .network-connections {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 15px; margin-top: 30px;
+        }
+        .connection-line {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 20px; background: rgba(255,217,61,0.15);
+            border-radius: 20px; font-size: 0.9rem;
+            border: 2px solid var(--accent);
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center; padding: 40px 20px;
+            background: linear-gradient(135deg, var(--bg-pink), var(--primary-light));
+            border-radius: 60px 60px 0 0; margin-top: 60px;
+        }
+        footer p { color: var(--text-light); font-size: 0.9rem; margin-bottom: 10px; }
+        footer .heart {
+            color: var(--primary); animation: heartbeat 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* 滚动动画 */
+        .fade-in {
+            opacity: 0; transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .logo { font-size: 2.5rem; }
+            .cat-grid { grid-template-columns: 1fr; gap: 20px; }
+            .stats-bar { gap: 15px; }
+            .stat-item { padding: 15px 25px; }
+            nav a { margin: 0 6px; padding: 6px 12px; font-size: 0.85rem; }
+            .behavior-grid { grid-template-columns: 1fr; }
+            .relation-categories { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+        <span class="paw">🐾</span><span class="paw">🐾</span><span class="paw">🐾</span>
+        <span class="paw">🐾</span><span class="paw">🐾</span><span class="paw">🐾</span>
+    </div>
+
+    <!-- 头部 -->
+    <header>
+        <h1 class="logo">🐱 猫在</h1>
+        <p class="subtitle">校园流浪猫行为图鉴与减压观察指南</p>
+        <span class="tagline">基于参与式记录的人猫共享空间研究 🐾</span>
+    </header>
+
+    <!-- 导航 -->
+    <nav>
+        <a class="nav-link active" data-section="home" onclick="showSection('home')">🏠 首页</a>
+        <a class="nav-link" data-section="archive" onclick="showSection('archive')">📋 猫咪档案</a>
+        <a class="nav-link" data-section="behavior" onclick="showSection('behavior')">🎭 行为图鉴</a>
+        <a class="nav-link" data-section="network" onclick="showSection('network')">💕 猫脉关系</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- ===== 首页 ===== -->
+        <div id="section-home" class="section active">
+            <div class="hero-section fade-in">
+                <div class="hero-cat">🐱</div>
+                <h2 class="hero-title">欢迎来到「猫在」校园猫咪世界</h2>
+                <p class="hero-desc">
+                    本项目以校园流浪猫为切入点，聚焦人猫共享空间中的行为互动与心理减压机制。
+                    通过参与式观察与数字化记录，构建校园流浪猫行为图鉴数据库，
+                    分析人猫互动的时空规律与情感联结模式。
+                </p>
+            </div>
+
+            <div class="stats-bar fade-in">
+                <div class="stat-item"><div class="stat-number">9</div><div class="stat-label">已建档猫咪</div></div>
+                <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">毛色种类</div></div>
+                <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">已绝育</div></div>
+                <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">行为类别</div></div>
+            </div>
+
+            <div class="hero-features">
+                <div class="feature-card" onclick="showSection('archive')">
+                    <div class="feature-icon">📋</div>
+                    <div class="feature-title">猫咪档案</div>
+                    <div class="feature-desc">为每只校园流浪猫建立详细档案，记录外貌特征、性格、健康状况和社交关系。</div>
+                </div>
+                <div class="feature-card" onclick="showSection('behavior')">
+                    <div class="feature-icon">🎭</div>
+                    <div class="feature-title">行为图鉴</div>
+                    <div class="feature-desc">参考动物行为学经典框架，建立五大行为分类体系，编制行为识别指南。</div>
+                </div>
+                <div class="feature-card" onclick="showSection('network')">
+                    <div class="feature-icon">💕</div>
+                    <div class="feature-title">猫脉关系</div>
+                    <div class="feature-desc">构建猫只社交网络，分析谁常一起出现、谁有领地冲突，绘制猫际关系图谱。</div>
+                </div>
+            </div>
+
+            <div class="research-cards">
+                <div class="research-card">
+                    <h4>🎯 研究背景</h4>
+                    <p>国内超过80%的高校存在流浪猫群体，当前管理面临"投喂无序、健康隐患、人猫冲突"三重困境。现有模式多采取驱赶-收容的单一化路径，忽视了人猫共生的情感价值。</p>
+                </div>
+                <div class="research-card">
+                    <h4>💡 创新特色</h4>
+                    <p>首次将"人猫共享空间"作为独立研究对象，引入参与式记录方法，以数字产品替代物理改造，实现零施工、零审批的跨校复制。</p>
+                </div>
+                <div class="research-card">
+                    <h4>🌟 社会意义</h4>
+                    <p>培育大学生的生命伦理意识与生态责任感，通过结构化的人猫互动缓解学业压力，促进校园心理健康生态建设。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 猫咪档案 ===== -->
+        <div id="section-archive" class="section">
+            <div class="stats-bar fade-in">
+                <div class="stat-item"><div class="stat-number">9</div><div class="stat-label">已建档猫咪</div></div>
+                <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">毛色种类</div></div>
+                <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">已绝育</div></div>
+                <div class="stat-item"><div class="stat-number">∞</div><div class="stat-label">可爱指数</div></div>
+            </div>
+            <div class="cat-grid">
+
+            <div class="cat-card fade-in" style="animation-delay: 0.0s">
+                <div class="card-header">
+                    <div class="avatar-container">
+                        <img src="images/dabin.jpg" alt="大饼" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="avatar-placeholder" style="display:none">🍊</div>
+                    </div>
+                    <div class="avatar-info">
+                        <h3>大饼</h3>
+                        <div class="badges">
+                            <span class="badge badge-gender-m">♂ 公</span>
+                            <span class="badge badge-color">🎨 橘猫</span>
+                            <span class="badge badge-health">💚 健康（未绝育）</span>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="info-section">
+                        <div class="info-label">👀 外貌特征</div>
+                        <div class="info-content">嘴巴一半白一半黄，四只爪子戴了白手套</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-label">💭 性格特点</div>
+                        <div class="info-content">亲人、乖巧、偶尔调皮</div>
+                    </div>
+                    
+            <div class="info-section">
+                <div class="info-label">🔗 猫际关系</div>
+                <div class="relations">
+                    <div class="relation-item"><span>🐾 玩伴：小橘子、玳瑁、滚地锦；偶尔和二饼打架</span></div>
+                </div>
+            </div>
+        
+                </div>
+                <div class="card-footer">
+                    <span class="mood">😸</span>
+                    <span class="id">#01</span>
+                </div>
+            </div>
+
+            <div class="cat-card fade-in" style="animation-delay: 0.1s">
+                <div class="card-header">
+                    <div class="avatar-container">
+                        <img src="images/gundijin.jpg" alt="滚地锦" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="avatar-placeholder" style="display:none">🌸</div>
+                    </div>
+                    <div class="avatar-info">
+                        <h3>滚地锦</h3>
+                        <div class="badges">
+                            <span class="badge badge-gender-f">♀ 母</span>
+                            <span class="badge badge-color">🎨 玳瑁</span>
+                            <span class="badge badge-health">💚 健康（绝育）</span>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="info-section">
+                        <div class="info-label">👀 外貌特征</div>
+                        <div class="info-content">黄、白、黑三种颜色交织，碧绿色的眼睛，眼间有黑色竖纹</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-label">💭 性格特点</div>
+                        <div class="info-content">亲人、温和，喜欢电瓶车车座、散步</div>
+                    </div>
+                    
+            <div class="info-section">
+                <div class="info-label">🔗 猫际关系</div>
+                <div class="relations">
+                    <div class="relation-item"><span>🐾 孩子：妈宝</span></div>
+                </div>
+            </div>
+        
+                </div>
+                <div class="card-footer">
+                    <span class="mood">😺</span>
+                    <span class="id">#02</span>
+                </div>
+            </div>
+
+            <div class="cat-card fade-in" style="animation-delay: 0.2s">
+                <div class="card-header">
+                    <div class="avatar-container">
+                        <img src="images/xianyue.jpg" alt="弦月" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="avatar-placeholder" style="display:none">🌙</div>
+                    </div>
+                    <div class="avatar-info">
+                        <h3>弦月</h3>
+                        <div class="badges">
+                            <span class="badge badge-gender-m">♂ 公</span>
+                            <span class="badge badge-color">🎨 奶牛</span>
+                            <span class="badge badge-health">💚 健康（绝育）</span>
+                            <span class="badge badge-love">💕 单身</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="info-section">
+                        <div class="info-label">👀 外貌特征</div>
+                        <div class="info-content">白短袜白领结，鼻子花纹不对称</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-label">💭 性格特点</div>
+                        <div class="info-content">粘人好动，喜欢踩奶、要饭</div>
+                    </div>
+                    
+            <div class="info-section">
+                <div class="info-label">🔗 猫际关系</div>
+                <div class="relations">
+                    <div class="relation-item"><span>🐾 曾与一撮灰打架</span></div>
+                </div>
+            </div>
+        
+                </div>
+                <div class="card-footer">
+                    <span class="mood">😻</span>
+                    <span class="id">#03</span>
+                </div>
+            </div>
+
+            <div class="cat-card fade-in" style="animation-delay: 0.30000000000000004s">
+                <div class="card-header">
+                    <div class="avatar-container">
+                        <img src="images/gungun.jpg" alt="棍棍" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="avatar-placeholder" style="display:none">🖤</div>
+                    </div>
+                    <div class="avatar-info">
+                        <h3>棍棍</h3>
+                        <div class="badges">
+                            <span class="badge badge-gender-m">♂ 公</span>
+                            <span class="badge badge-color">🎨 黑猫</span>
+                            <span class="badge badge-health">💚 健康（绝育）</span>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="info-section">
+                        <div class="info-label">👀 外貌特征</div>
+                        <div class="info-content">肚皮上有一撮白毛，绿色眼睛</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-label">💭 性格特点</div>
+                        <div class="info-content">不怕人，不亲人</div>
+                    </div>
+                    
+            <div class="info-section">
+                <div class="info-label">🔗 猫际关系</div>
+                <div class="relations">
+                    <div class="relation-item"><span>🐾 好友：小小、光光</span></div>
+                </div>
+            </div>
+        
+                </div>
+                <div class="card-footer">
+                    <span class="mood">😾</span>
+                    <span class="id">#04</span>
+                </div>
+            </div>
+
+            <div class="cat-card fade-in" style="animation-delay: 0.4s">
+                <div class="card-header">
+                    <div class="avatar-container">
+                        <img src="images/sansan.jpg" alt="三三" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="avatar-placeholder" style="display:none">👮</div>
+                    </div>
+                    <div class="avatar-info">
+                        <h3>三三</h3>
+                        <div class="badges">
+                            <span class="badge badge-gender-m">♂ 公</span>
+                            <span class="badge badge-color">🎨 警长</span>
+                            <span class="badge badge-health">💚 健康（绝育）</span>
+                            <span class="badge badge-love">💕 单身</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="info-section">
+                        <div class="info-label">👀 外貌特征</div>
+                        <div class="info-content">白胸白爪白肚皮，鼻尖、鼻梁、嘴边左侧有小白点</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-label">💭 性格特点</div>
+                        <div class="info-content">爱玩、亲人、活泼</div>
+                    </div>
+                    
+            <div class="info-section">
+                <div class="info-label">🔗 猫际关系</div>
+                <div class="relations">
+                    <div class="relation-item"><span>🐾 妈妈：小警长；兄弟姐妹：东东、小食；好朋友：图图</span></div>
+                </div>
+            </div>
+        
+                </div>
+                <div class="card-footer">
+                    <span class="mood">😸</span>
+                    <span class="id">#05</span>
+                </div>
+            </div>
+
+            <div class="cat-card fade-in" style="animation-delay: 0.5s">
+                <div class="card-header">
+                    <div class="avatar-container">
+                        <img src="images/bandi.jpg" alt="班弟" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="avatar-placeholder" style="display:none">🐄</div>
+                    </div>
+                    <div class="avatar-info">
+                        <h3>班弟</h3>
+                        <div class="badges">
+                            <span class="badge badge-gender-f">♀ 母</span>
+                            <span class="badge badge-color">🎨 奶牛</span>
+                            <span class="badge badge-health">💚 口炎（绝育）</span>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="info-section">
+                        <div class="info-label">👀 外貌特征</div>
+                        <div class="info-content">瘦，舌头经常吐出，黄绿色眼睛，嘴左边的白色块非常有标志性</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-label">💭 性格特点</div>
+                        <div class="info-content">不亲人，喜欢和其他母猫贴贴</div>
+                    </div>
+                    
+            <div class="info-section">
+                <div class="info-label">🔗 猫际关系</div>
+                <div class="relations">
+                    <div class="relation-item"><span>🐾 朋友：斑叶、短袜；前夫：小小</span></div>
+                </div>
+            </div>
+        
+                </div>
+                <div class="card-footer">
+                    <span class="mood">😼</span>
+                    <span class="id">#06</span>
+                </div>
+            </div>
+
+            <div class="cat-card fade-in" style="animation-delay: 0.6000000000000001s">
+                <div class="card-header">
+                    <div class="avatar-container">
+                        <img src="images/huyizui.jpg" alt="糊一脸" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="avatar-placeholder" style="display:none">🍐</div>
+                    </div>
+                    <div class="avatar-info">
+                        <h3>糊一脸</h3>
+                        <div class="badges">
+                            <span class="badge badge-gender-f">♀ 母</span>
+                            <span class="badge badge-color">🎨 狸白</span>
+                            <span class="badge badge-health">💚 健康（绝育）</span>
+                            <span class="badge badge-love">💕 单身</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="info-section">
+                        <div class="info-label">👀 外貌特征</div>
+                        <div class="info-content">花背白肚，耳部有绝育剪耳缺口，胖，坐着像梨</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-label">💭 性格特点</div>
+                        <div class="info-content">懒，间歇性恐人，平时脾气很好；喜好：干饭、睡觉、趴着看大家取快递</div>
+                    </div>
+                    
+            <div class="info-section">
+                <div class="info-label">🔗 猫际关系</div>
+                <div class="relations">
+                    <div class="relation-item"><span>🐾 孩子：半半、全全；好朋友：错错</span></div>
+                </div>
+            </div>
+        
+                </div>
+                <div class="card-footer">
+                    <span class="mood">😴</span>
+                    <span class="id">#07</span>
+                </div>
+            </div>
+
+            <div class="cat-card fade-in" style="animation-delay: 0.7000000000000001s">
+                <div class="card-header">
+                    <div class="avatar-container">
+                        <img src="images/xiaotu.jpg" alt="小图" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="avatar-placeholder" style="display:none">🎨</div>
+                    </div>
+                    <div class="avatar-info">
+                        <h3>小图</h3>
+                        <div class="badges">
+                            <span class="badge badge-gender-m">♂ 公</span>
+                            <span class="badge badge-color">🎨 狸白</span>
+                            <span class="badge badge-health">💚 健康（绝育）</span>
+                            <span class="badge badge-love">💕 单身</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="info-section">
+                        <div class="info-label">👀 外貌特征</div>
+                        <div class="info-content">狸花深V外套，白脖颈，白手套白口罩，鼻子旁有一块棕色花纹</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-label">💭 性格特点</div>
+                        <div class="info-content">温顺亲人；喜好：晒太阳、睡觉、讨食</div>
+                    </div>
+                    
+            <div class="info-section">
+                <div class="info-label">🔗 猫际关系</div>
+                <div class="relations">
+                    <div class="relation-item"><span>🐾 害怕老白；朋友：点墨、ddl</span></div>
+                </div>
+            </div>
+        
+                </div>
+                <div class="card-footer">
+                    <span class="mood">☀️</span>
+                    <span class="id">#08</span>
+                </div>
+            </div>
+
+            <div class="cat-card fade-in" style="animation-delay: 0.8s">
+                <div class="card-header">
+                    <div class="avatar-container">
+                        <img src="images/duanwa.jpg" alt="短袜" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="avatar-placeholder" style="display:none">🧦</div>
+                    </div>
+                    <div class="avatar-info">
+                        <h3>短袜</h3>
+                        <div class="badges">
+                            <span class="badge badge-gender-f">♀ 母</span>
+                            <span class="badge badge-color">🎨 奶牛</span>
+                            <span class="badge badge-health">💚 健康（绝育）</span>
+                            <span class="badge badge-love">💕 单身</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="info-section">
+                        <div class="info-label">👀 外貌特征</div>
+                        <div class="info-content">黑色底色，白胸白爪，嘴边和肚皮上有白色碎花，左耳有两个缺口</div>
+                    </div>
+                    <div class="info-section">
+                        <div class="info-label">💭 性格特点</div>
+                        <div class="info-content">智慧稳重礼貌；喜好：晒太阳、逗猫棒</div>
+                    </div>
+                    
+            <div class="info-section">
+                <div class="info-label">🔗 猫际关系</div>
+                <div class="relations">
+                    <div class="relation-item"><span>🐾 孩子：长袜、无袜、小小和大聪明；孙子：小小熊；曾和蜜桔、砂糖、烟烟打架</span></div>
+                </div>
+            </div>
+        
+                </div>
+                <div class="card-footer">
+                    <span class="mood">🧠</span>
+                    <span class="id">#09</span>
+                </div>
+            </div>
+
+            </div>
+        </div>
+
+        <!-- ===== 行为图鉴 ===== -->
+        <div id="section-behavior" class="section">
+            <div class="behavior-intro fade-in">
+                <h2>🎭 校园流浪猫行为图鉴</h2>
+                <p>参考动物行为学经典框架（Altmann, 1974），结合校园场景特殊性，建立包含五大类别的行为编码系统。通过参与式记录，编制行为识别指南，帮助观察员准确识别和记录猫咪行为。</p>
+            </div>
+
+            <div class="behavior-grid">
+                <div class="behavior-card fade-in">
+                    <span class="behavior-icon">🍖</span>
+                    <div class="behavior-name">觅食行为</div>
+                    <div class="behavior-desc">
+                        与获取食物相关的一切行为，包括主动寻找食物、接受投喂、抢夺食物、储存食物等。校园流浪猫的主要食物来源包括学生投喂、垃圾桶觅食和捕食小动物。
+                    </div>
+                    <div class="behavior-examples">
+                        <h5>📌 典型表现</h5>
+                        <ul>
+                            <li>围着人转圈、蹭腿讨食</li>
+                            <li>翻找垃圾桶</li>
+                            <li>蹲守在固定投喂点</li>
+                            <li>护食、对靠近者发出低吼</li>
+                            <li>将食物拖到隐蔽处再食用</li>
+                        </ul>
+                    </div>
+                    <div class="behavior-cats">
+                        <span>大饼</span><span>弦月</span><span>糊一脸</span><span>小图</span>
+                    </div>
+                </div>
+
+                <div class="behavior-card fade-in">
+                    <span class="behavior-icon">🤝</span>
+                    <div class="behavior-name">社交行为</div>
+                    <div class="behavior-desc">
+                        猫咪之间的互动行为，包括友好社交（互相舔毛、并肩行走）和冲突社交（哈气、追逐、打架）。社交行为反映了猫群内部的等级结构和领地划分。
+                    </div>
+                    <div class="behavior-examples">
+                        <h5>📌 典型表现</h5>
+                        <ul>
+                            <li>互相舔毛、蹭头标记气味</li>
+                            <li>并肩行走、一起晒太阳</li>
+                            <li>哈气、弓背、炸毛警告</li>
+                            <li>追逐、扑击、扭打</li>
+                            <li>领地巡逻、边界标记</li>
+                        </ul>
+                    </div>
+                    <div class="behavior-cats">
+                        <span>棍棍</span><span>三三</span><span>班弟</span><span>短袜</span>
+                    </div>
+                </div>
+
+                <div class="behavior-card fade-in">
+                    <span class="behavior-icon">😴</span>
+                    <div class="behavior-name">休憩行为</div>
+                    <div class="behavior-desc">
+                        猫咪休息和睡眠的行为模式。校园流浪猫倾向于选择温暖、安全、视野开阔的地点休息，如车座、花坛、窗台、纸箱等。休憩位置的选择反映了猫咪对环境安全感的评估。
+                    </div>
+                    <div class="behavior-examples">
+                        <h5>📌 典型表现</h5>
+                        <ul>
+                            <li>蜷缩成球状睡眠</li>
+                            <li>肚皮朝天四脚朝天躺</li>
+                            <li>趴在车座/车筐上取暖</li>
+                            <li>半睁着眼睛打盹（警戒状态）</li>
+                            <li>伸懒腰、打哈欠</li>
+                        </ul>
+                    </div>
+                    <div class="behavior-cats">
+                        <span>滚地锦</span><span>糊一脸</span><span>小图</span><span>短袜</span>
+                    </div>
+                </div>
+
+                <div class="behavior-card fade-in">
+                    <span class="behavior-icon">🔍</span>
+                    <div class="behavior-name">探索行为</div>
+                    <div class="behavior-desc">
+                        猫咪对环境的探索和调查行为，包括巡视领地、追逐移动物体、攀爬、钻洞等。探索行为体现了猫咪的好奇心和领地意识，也是它们适应校园环境的重要方式。
+                    </div>
+                    <div class="behavior-examples">
+                        <h5>📌 典型表现</h5>
+                        <ul>
+                            <li>竖起耳朵、转动头部观察</li>
+                            <li>追逐落叶、昆虫、光斑</li>
+                            <li>攀爬树木、围墙、车辆</li>
+                            <li>钻进纸箱、车筐、灌木丛</li>
+                            <li>用鼻子嗅闻、用胡须探测</li>
+                        </ul>
+                    </div>
+                    <div class="behavior-cats">
+                        <span>大饼</span><span>三三</span><span>弦月</span>
+                    </div>
+                </div>
+
+                <div class="behavior-card fade-in">
+                    <span class="behavior-icon">⚡</span>
+                    <div class="behavior-name">应激行为</div>
+                    <div class="behavior-desc">
+                        猫咪面对威胁、压力或不适环境时表现出的防御和逃避行为。校园环境中常见的应激源包括陌生人类、其他动物、噪音、天气变化等。识别应激行为有助于避免人猫冲突。
+                    </div>
+                    <div class="behavior-examples">
+                        <h5>📌 典型表现</h5>
+                        <ul>
+                            <li>耳朵向后贴、瞳孔放大</li>
+                            <li>尾巴下垂或剧烈摆动</li>
+                            <li>发出嘶嘶声或低吼</li>
+                            <li>快速逃离、躲藏</li>
+                            <li>过度舔毛、抓挠</li>
+                        </ul>
+                    </div>
+                    <div class="behavior-cats">
+                        <span>棍棍</span><span>班弟</span><span>小图</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guide-section fade-in">
+                <h3>📖 校园流浪猫观察指南</h3>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <div class="step-num">1</div>
+                        <h4>👀 保持距离</h4>
+                        <p>观察时保持2-3米距离，避免突然靠近或大声喧哗，让猫咪适应你的存在。</p>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-num">2</div>
+                        <h4>📝 记录日志</h4>
+                        <p>记录时间、地点、猫咪特征、行为类型，可使用标准化观察日志App。</p>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-num">3</div>
+                        <h4>📸 随手拍摄</h4>
+                        <p>拍摄照片/视频作为非结构化补充数据，注意不使用闪光灯。</p>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-num">4</div>
+                        <h4>🐾 尊重意愿</h4>
+                        <p>遵循"猫只自愿、学生安全"原则，不强迫互动，猫咪回避时停止靠近。</p>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-num">5</div>
+                        <h4>💚 伦理守则</h4>
+                        <p>不投喂有害食物、不随意移动猫咪、发现伤病及时联系救助组织。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 猫脉关系 ===== -->
+        <div id="section-network" class="section">
+            <div class="relation-intro fade-in">
+                <h2>💕 猫脉关系图</h2>
+                <p>基于行为数据构建猫只社交网络，分析谁常一起出现、谁有领地冲突。通过关系图谱揭示校园猫群的社交结构与互动模式，为理解猫群生态提供数据支撑。</p>
+            </div>
+
+            <div class="relation-categories">
+                <!-- 亲子关系 -->
+                <div class="relation-category fade-in">
+                    <div class="relation-category-header">
+                        <span class="relation-category-icon">👨‍👩‍👧‍👦</span>
+                        <div>
+                            <div class="relation-category-title">亲子关系</div>
+                            <div class="relation-category-subtitle">母子/母女/父子</div>
+                        </div>
+                    </div>
+                    <div class="relation-list">
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#FFD6C1,#A8E6CF)">🧦</div>
+                            <div class="relation-info">
+                                <div class="name">短袜</div>
+                                <div class="detail">妈妈 → 孩子：长袜、无袜、小小、大聪明</div>
+                            </div>
+                            <span class="relation-arrow">👶</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#FFD6C1,#A8E6CF)">🍐</div>
+                            <div class="relation-info">
+                                <div class="name">糊一脸</div>
+                                <div class="detail">妈妈 → 孩子：半半、全全</div>
+                            </div>
+                            <span class="relation-arrow">👶</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#FFD6C1,#A8E6CF)">🌸</div>
+                            <div class="relation-info">
+                                <div class="name">滚地锦</div>
+                                <div class="detail">妈妈 → 孩子：妈宝</div>
+                            </div>
+                            <span class="relation-arrow">👶</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#E3F2FD,#A8E6CF)">👮</div>
+                            <div class="relation-info">
+                                <div class="name">三三</div>
+                                <div class="detail">孩子 → 妈妈：小警长；兄弟姐妹：东东、小食</div>
+                            </div>
+                            <span class="relation-arrow">👪</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 好友关系 -->
+                <div class="relation-category fade-in">
+                    <div class="relation-category-header">
+                        <span class="relation-category-icon">🤝</span>
+                        <div>
+                            <div class="relation-category-title">好友关系</div>
+                            <div class="relation-category-subtitle">玩伴 / 伙伴 / 贴贴</div>
+                        </div>
+                    </div>
+                    <div class="relation-list">
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#333,#666)">🖤</div>
+                            <div class="relation-info">
+                                <div class="name">棍棍</div>
+                                <div class="detail">好友：小小、光光</div>
+                            </div>
+                            <span class="relation-arrow">💚</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#E3F2FD,#A8E6CF)">👮</div>
+                            <div class="relation-info">
+                                <div class="name">三三</div>
+                                <div class="detail">好朋友：图图</div>
+                            </div>
+                            <span class="relation-arrow">💚</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#FCE4EC,#FFF3E0)">🐄</div>
+                            <div class="relation-info">
+                                <div class="name">班弟</div>
+                                <div class="detail">朋友：斑叶、短袜（和认识的猫猫关系都不错）</div>
+                            </div>
+                            <span class="relation-arrow">💚</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#FFD6C1,#A8E6CF)">🍐</div>
+                            <div class="relation-info">
+                                <div class="name">糊一脸</div>
+                                <div class="detail">好朋友：错错</div>
+                            </div>
+                            <span class="relation-arrow">💚</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#FFF3E0,#FFD6C1)">🍊</div>
+                            <div class="relation-info">
+                                <div class="name">大饼</div>
+                                <div class="detail">玩伴：小橘子、玳瑁、滚地锦</div>
+                            </div>
+                            <span class="relation-arrow">💚</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 冲突关系 -->
+                <div class="relation-category fade-in">
+                    <div class="relation-category-header">
+                        <span class="relation-category-icon">⚔️</span>
+                        <div>
+                            <div class="relation-category-title">冲突关系</div>
+                            <div class="relation-category-subtitle">打架 / 对峙 / 领地争夺</div>
+                        </div>
+                    </div>
+                    <div class="relation-list">
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#FFF3E0,#FFD6C1)">🍊</div>
+                            <div class="relation-info">
+                                <div class="name">大饼</div>
+                                <div class="detail">偶尔和二饼打架</div>
+                            </div>
+                            <span class="relation-arrow">⚡</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#E3F2FD,#FFD6C1)">🌙</div>
+                            <div class="relation-info">
+                                <div class="name">弦月</div>
+                                <div class="detail">曾与一撮灰打架</div>
+                            </div>
+                            <span class="relation-arrow">⚡</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#FFD6C1,#A8E6CF)">🧦</div>
+                            <div class="relation-info">
+                                <div class="name">短袜</div>
+                                <div class="detail">曾和蜜桔、砂糖、烟烟打架</div>
+                            </div>
+                            <span class="relation-arrow">⚡</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#E3F2FD,#A8E6CF)">🎨</div>
+                            <div class="relation-info">
+                                <div class="name">小图</div>
+                                <div class="detail">害怕老白</div>
+                            </div>
+                            <span class="relation-arrow">⚡</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 前任关系 -->
+                <div class="relation-category fade-in">
+                    <div class="relation-category-header">
+                        <span class="relation-category-icon">💔</span>
+                        <div>
+                            <div class="relation-category-title">情感关系</div>
+                            <div class="relation-category-subtitle">前任 / 追求者 / 单身</div>
+                        </div>
+                    </div>
+                    <div class="relation-list">
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#FCE4EC,#FFF3E0)">🐄</div>
+                            <div class="relation-info">
+                                <div class="name">班弟</div>
+                                <div class="detail">前夫：小小</div>
+                            </div>
+                            <span class="relation-arrow">💔</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#E3F2FD,#FFD6C1)">🌙</div>
+                            <div class="relation-info">
+                                <div class="name">弦月</div>
+                                <div class="detail">恋爱状况：单身</div>
+                            </div>
+                            <span class="relation-arrow">💜</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#E3F2FD,#A8E6CF)">👮</div>
+                            <div class="relation-info">
+                                <div class="name">三三</div>
+                                <div class="detail">恋爱状况：单身</div>
+                            </div>
+                            <span class="relation-arrow">💜</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#FFD6C1,#A8E6CF)">🍐</div>
+                            <div class="relation-info">
+                                <div class="name">糊一脸</div>
+                                <div class="detail">恋爱状况：单身</div>
+                            </div>
+                            <span class="relation-arrow">💜</span>
+                        </div>
+                        <div class="relation-item">
+                            <div class="relation-avatar" style="background:linear-gradient(135deg,#FFD6C1,#A8E6CF)">🧦</div>
+                            <div class="relation-info">
+                                <div class="name">短袜</div>
+                                <div class="detail">恋爱状况：单身</div>
+                            </div>
+                            <span class="relation-arrow">💜</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="network-section fade-in">
+                <h3>🕸️ 猫际关系网络概览</h3>
+                <div class="network-visual">
+                    <div class="network-node"><div class="node-emoji">🍊</div><div class="node-name">大饼</div></div>
+                    <div class="network-node"><div class="node-emoji">🌸</div><div class="node-name">滚地锦</div></div>
+                    <div class="network-node"><div class="node-emoji">🌙</div><div class="node-name">弦月</div></div>
+                    <div class="network-node"><div class="node-emoji">🖤</div><div class="node-name">棍棍</div></div>
+                    <div class="network-node"><div class="node-emoji">👮</div><div class="node-name">三三</div></div>
+                    <div class="network-node"><div class="node-emoji">🐄</div><div class="node-name">班弟</div></div>
+                    <div class="network-node"><div class="node-emoji">🍐</div><div class="node-name">糊一脸</div></div>
+                    <div class="network-node"><div class="node-emoji">🎨</div><div class="node-name">小图</div></div>
+                    <div class="network-node"><div class="node-emoji">🧦</div><div class="node-name">短袜</div></div>
+                </div>
+                <div class="network-connections">
+                    <div class="connection-line">🍊 大饼 ↔ 滚地锦 🌸 <span style="margin-left:8px">🤝 玩伴</span></div>
+                    <div class="connection-line">🖤 棍棍 ↔ 小小 💚 <span style="margin-left:8px">🤝 好友</span></div>
+                    <div class="connection-line">👮 三三 ↔ 图图 💚 <span style="margin-left:8px">🤝 好友</span></div>
+                    <div class="connection-line">🐄 班弟 ↔ 小小 💔 <span style="margin-left:8px">💔 前任</span></div>
+                    <div class="connection-line">🧦 短袜 ↔ 蜜桔 ⚡ <span style="margin-left:8px">⚔️ 冲突</span></div>
+                    <div class="connection-line">🎨 小图 ⚡ 老白 <span style="margin-left:8px">⚔️ 害怕</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>🐱 猫在 · 校园流浪猫行为图鉴与减压观察指南 🐱</p>
+        <p>基于参与式记录的人猫共享空间研究</p>
+        <p>Made with <span class="heart">💖</span> for campus cats</p>
+    </footer>
+
+    <script>
+        // 板块切换
+        function showSection(sectionId) {
+            // 隐藏所有板块
+            document.querySelectorAll('.section').forEach(s => {
+                s.classList.remove('active');
+            });
+            // 显示目标板块
+            document.getElementById('section-' + sectionId).classList.add('active');
+            // 更新导航状态
+            document.querySelectorAll('.nav-link').forEach(a => {
+                a.classList.remove('active');
+            });
+            document.querySelector('.nav-link[data-section="' + sectionId + '"]').classList.add('active');
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // 触发淡入动画
+            setTimeout(() => {
+                document.querySelectorAll('.section.active .fade-in').forEach(el => {
+                    el.classList.add('visible');
+                });
+            }, 100);
+        }
+
+        // 滚动淡入动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 鼠标跟随效果
+        document.addEventListener('mousemove', (e) => {
+            const paws = document.querySelectorAll('.paw');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            paws.forEach((paw, index) => {
+                const speed = (index + 1) * 0.5;
+                paw.style.transform = `translate(${x * 20 * speed}px, ${y * 20 * speed}px)`;
+            });
+        });
+
+        // 卡片点击效果
+        document.querySelectorAll('.cat-card, .behavior-card, .feature-card, .relation-category').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => { this.style.transform = ''; }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
